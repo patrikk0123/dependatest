@@ -1,0 +1,17 @@
+.disabled-content {
+  pointer-events: none;
+}
+
+.disabled-content a {
+  pointer-events: none;
+  color: #6a6e73;
+}
+
+.disabled-content button {
+  pointer-events: none;
+  color: #6a6e73 !important;
+}
+
+.disabled-content button::after {
+  border-color: #6a6e73;
+}

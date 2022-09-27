@@ -1,0 +1,42 @@
+.top-bar {
+  padding: 8px;
+}
+
+.top-bar-error {
+  color: var(--c-error-text);
+  background-color: var(--c-error-primary);
+}
+
+.top-bar-warning {
+  color: var(--c-warning-text);
+  background-color: var(--c-warning-primary);
+}
+
+.top-bar-info {
+  color: var(--c-info-text);
+  background-color: var(--c-info-primary);
+}
+
+.top-bar-error .close-icon {
+  color: var(--c-error-close-icon);
+}
+
+.top-bar-error button:hover > .close-icon {
+  color: var(--c-error-close-icon-hover);
+}
+
+.top-bar-warning .close-icon {
+  color: var(--c-warning-close-icon);
+}
+
+.top-bar-warning button:hover > .close-icon {
+  color: var(--c-warning-close-icon-hover);
+}
+
+.top-bar-info .close-icon {
+  color: var(--c-info-close-icon);
+}
+
+.top-bar-info button:hover > .close-icon {
+  color: var(--c-info-close-icon-hover);
+}
