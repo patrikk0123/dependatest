@@ -1,4 +1,4 @@
-name: Dependabot auto-merge
+name: Dependabot dependency update workflow
 on: pull_request
 
 permissions:
@@ -6,7 +6,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  dependabot-check:
+  dependabot-comment:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:
@@ -15,39 +15,17 @@ jobs:
         uses: dependabot/fetch-metadata@v1.3.5
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Enable auto-merge (rebase) for a PR for patch and minor update starting with caret
-        if: ${{startsWith(steps.dependabot-metadata.outputs.previous-version, '^') && (steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor')}}
+      - name: Comment a PR for patch and minor update
+        if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor'}}
         run: |
-          gh pr merge --auto --rebase "$PR_URL"
-          gh pr review --approve "$PR_URL" --body "This pull request is automatically **approved** because it is a *patch* or *minor* update and the original version starts with a caret."
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Comment a PR for patch and minor update not starting with caret
-        if: ${{!startsWith(steps.dependabot-metadata.outputs.previous-version, '^') && (steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor')}}
-        run: |
-          COMMENT=$'This pull requestrequires manual review because it is *minor* or *patch*\nupdate, but the original version does not start with a caret.'
-          gh pr comment $PR_URL --body "$COMMENT"
-          gh pr edit $PR_URL --add-label "requires-manual-testing"
+          gh pr comment $PR_URL --body "This pull request is a *minor* or *patch* dependency update. Before merging, please check that original version starts with caret in *package.json*. If not, consult with other team members."
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Comment a PR for major update
         if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-major'}}
         run: |
-          gh pr comment $PR_URL --body "This pull request requires manual review because it is a **major** update."
-          gh pr edit $PR_URL --add-label "requires-manual-testing"
+          gh pr comment $PR_URL --body "This pull request is a **major** dependency update. Before merging, please check whether there are any breaking changes."
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Test
-        run: |
-          echo $EXP1
-          echo $EXP4
-          echo $EXP2
-          echo $EXP3
-        env:
-          EXP1: ${{steps.dependabot-metadata.outputs.previous-version}}
-          EXP4: ${{steps.dependabot-metadata.outputs.new-version}}
-          EXP2: ${{startsWith(steps.dependabot-metadata.outputs.previous-version, '^')}}
-          EXP3: ${{!startsWith(steps.dependabot-metadata.outputs.previous-version, '^')}}
