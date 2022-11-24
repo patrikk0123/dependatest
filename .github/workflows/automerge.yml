@@ -42,9 +42,11 @@ jobs:
       - name: Test
         run: |
           echo $EXP1
+          echo $EXP4
           echo $EXP2
           echo $EXP3
         env:
           EXP1: ${{steps.dependabot-metadata.outputs.previous-version}}
+          EXP4: ${{steps.dependabot-metadata.outputs.new-version}}
           EXP2: ${{startsWith(steps.dependabot-metadata.outputs.previous-version, '^')}}
           EXP3: ${{!startsWith(steps.dependabot-metadata.outputs.previous-version, '^')}}
