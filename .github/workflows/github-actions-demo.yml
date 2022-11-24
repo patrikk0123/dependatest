@@ -34,17 +34,6 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
-      - name: Send mail
-        uses: dawidd6/action-send-mail@v3.7.1
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_ADDR }}
-          from: ${{ secrets.MAIL_ADDR }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
-          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
-          to: ${{ secrets.MAIL_TO }}
 
   check-package-lock:
     runs-on: ubuntu-latest
@@ -64,3 +53,21 @@ jobs:
       - run: npm install
       - name: Fail if npm install changed package-lock.json
         run: git diff --exit-code package-lock.json
+  
+  send-email:
+    needs: [build, check-package-lock]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3.7.1
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_ADDR }}
+          from: ${{ secrets.MAIL_ADDR }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: BUILD status of ${{ github.repository }} has ${{ github.jobs.build.result }}
+          body: BUILD job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ github.jobs.build.result }}
+          to: ${{ secrets.MAIL_TO }}
