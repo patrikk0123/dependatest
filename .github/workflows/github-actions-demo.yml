@@ -39,6 +39,7 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
+          username: ${{ secrets.MAIL_ADDR }}
           from: ${{ secrets.MAIL_ADDR }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
