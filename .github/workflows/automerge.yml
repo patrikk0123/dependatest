@@ -27,7 +27,7 @@ jobs:
         if: ${{!startsWith(steps.dependabot-metadata.outputs.previous-version, '^') && (steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch' || steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor')}}
         run: |
           $COMMENT=$'This pull requestrequires manual review because it is *minor* or *patch*\nupdate, but the original version does not start with a caret.'
-          gh pr comment $PR_URL --body $COMMENT
+          gh pr comment $PR_URL --body "$COMMENT"
           gh pr edit $PR_URL --add-label "requires-manual-testing"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
