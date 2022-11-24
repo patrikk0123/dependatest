@@ -10,6 +10,11 @@ on:
   schedule:
     - cron:  '17 14 * * *'
 
+env:
+  MAIL_ADDR: ${{ secrets.MAIL_ADDR }}
+  MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+  MAIL_TO: ${{ secrets.MAIL_TO }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,6 +34,16 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3.7.1
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          from: ${{ secrets.MAIL_ADDR }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          to: ${{ secrets.MAIL_TO }}
 
   check-package-lock:
     runs-on: ubuntu-latest
