@@ -68,6 +68,6 @@ jobs:
           username: ${{ secrets.MAIL_ADDR }}
           from: ${{ secrets.MAIL_ADDR }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: BUILD status of ${{ github.repository }} has ${{ github.jobs.build.result }}
+          subject: BUILD status of ${{ github.repository }} [${{ needs.build.result }}]
           body: BUILD job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ needs.build.result }}
           to: ${{ secrets.MAIL_TO }}
