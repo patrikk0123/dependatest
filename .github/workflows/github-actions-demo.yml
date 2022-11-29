@@ -63,9 +63,11 @@ jobs:
           username: ${{ secrets.MAIL_ADDR }}
           from: ${{ secrets.MAIL_ADDR }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: Job status of ${{ github.repository }} [FAILED]
+          subject: \[${{ github.repository }}\] github.workflow workflow run [FAILED]
           body: |
-            ${{ github.workflow }} of ${{ github.repository }}
+            ${{ github.workflow }} workflow of ${{ github.repository }} repository jobs satus:
             -> BUILD job status - ${{ needs.build.result }}
-            -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}    
+            -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}
+            
+            Link to the repository: ${{ github.repositoryUrl }}
           to: ${{ secrets.MAIL_TO }}
