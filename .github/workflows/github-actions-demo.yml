@@ -63,7 +63,7 @@ jobs:
           username: ${{ secrets.MAIL_ADDR }}
           from: ${{ secrets.MAIL_ADDR }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: \[${{ github.repository }}] ${{ github.workflow }} workflow run [FAILED]
+          subject: ${{'['}}${{ github.repository }}] ${{ github.workflow }} workflow run [FAILED]
           body: |
             ${{ github.workflow }} workflow of ${{ github.repository }} repository jobs satus:
             -> BUILD job status - ${{ needs.build.result }}
