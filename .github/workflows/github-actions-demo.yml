@@ -45,6 +45,7 @@ jobs:
       - run: npm install
       - name: Fail if npm install changed package-lock.json
         run: git diff --exit-code package-lock.json
+      - run: exit 1
   
   send-email:
     needs: [build, check-package-lock]
@@ -65,6 +66,5 @@ jobs:
           body: |
             ${{ github.workflow }} of ${{ github.repository }}
             -> BUILD job status - ${{ needs.build.result }}
-            -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}
-                
+            -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}    
           to: ${{ secrets.MAIL_TO }}
