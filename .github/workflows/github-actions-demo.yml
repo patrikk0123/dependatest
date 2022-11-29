@@ -48,6 +48,7 @@ jobs:
       - run: exit 1
   
   send-email:
+    if: ${{ always() }}
     needs: [build, check-package-lock]
     runs-on: ubuntu-latest
 
