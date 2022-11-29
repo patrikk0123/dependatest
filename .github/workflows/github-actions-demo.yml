@@ -51,10 +51,10 @@ jobs:
     needs: [build, check-package-lock]
     runs-on: ubuntu-latest
 
-    if: ${{ needs.build.result == 'failure' || needs.check-package-lock.result == 'failure' }}
     steps:
       - uses: actions/checkout@v2
       - name: Send mail
+        if: ${{ needs.build.result == 'failure' || needs.check-package-lock.result == 'failure' }}
         uses: dawidd6/action-send-mail@v3.7.1
         with:
           server_address: smtp.gmail.com
