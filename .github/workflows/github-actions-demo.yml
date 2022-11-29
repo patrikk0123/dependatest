@@ -65,7 +65,7 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: ${{'['}}${{ github.repository }}] ${{ github.workflow }} workflow run [FAILED]
           body: |
-            ${{ github.workflow }} workflow of ${{ github.repository }} repository jobs satus:
+            ${{ github.workflow }} workflow of ${{ github.repository }} repository jobs status:
             -> BUILD job status - ${{ needs.build.result }}
             -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}
             
