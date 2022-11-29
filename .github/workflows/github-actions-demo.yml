@@ -10,11 +10,6 @@ on:
   schedule:
     - cron:  '17 14 * * *'
 
-env:
-  MAIL_ADDR: ${{ secrets.MAIL_ADDR }}
-  MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-  MAIL_TO: ${{ secrets.MAIL_TO }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -66,6 +61,9 @@ jobs:
           from: ${{ secrets.MAIL_ADDR }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: Job status of ${{ github.repository }}
-          body: ${{ github.workflow }} of ${{ github.repository }} -> BUILD job status - ${{ needs.build.result }} -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}
+          body: |
+            ${{ github.workflow }} of ${{ github.repository }}
+            -> BUILD job status - ${{ needs.build.result }}
+            -> CHECK PACKAGE LOCK job status - ${{ needs.check-package-lock.result }}
                 
           to: ${{ secrets.MAIL_TO }}
