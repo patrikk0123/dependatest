@@ -45,7 +45,6 @@ jobs:
       - run: npm install
       - name: Fail if npm install changed package-lock.json
         run: git diff --exit-code package-lock.json
-      - run: exit 1
   
   send-email:
     if: ${{ always() }}
